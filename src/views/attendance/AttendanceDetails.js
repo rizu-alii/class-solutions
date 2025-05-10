@@ -17,6 +17,8 @@ import {
   CTableRow,
   CAlert,
   CFormSelect,
+  CPagination,
+  CPaginationItem,
 } from '@coreui/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -83,6 +85,8 @@ const AttendanceDetails = () => {
   const [showUpdate, setShowUpdate] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [statusFilter, setStatusFilter] = useState('all')
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
 
   // Generate dummy attendance data on mount or date change
   useEffect(() => {
@@ -128,6 +132,13 @@ const AttendanceDetails = () => {
   const filteredAttendance = statusFilter === 'all'
     ? attendance
     : attendance.filter(row => row.status === statusFilter)
+  const totalPages = Math.ceil(filteredAttendance.length / pageSize)
+  const paginatedAttendance = filteredAttendance.slice((page - 1) * pageSize, page * pageSize)
+
+  // Reset to page 1 when filter or attendance changes
+  useEffect(() => {
+    setPage(1)
+  }, [statusFilter, dateType, date, dateRange, pageSize])
 
   return (
     <CRow className="justify-content-center">
@@ -244,6 +255,19 @@ const AttendanceDetails = () => {
                 </div>
               </div>
             </CForm>
+            {/* Page Size Selector */}
+            <div className="d-flex justify-content-end align-items-center mb-2" style={{ width: '100%' }}>
+              <CFormLabel htmlFor="pageSize" className="me-2 mb-0" style={{ color: isDark ? '#fff' : '#222' }}>Records per page:</CFormLabel>
+              <CFormSelect
+                id="pageSize"
+                value={pageSize}
+                onChange={e => setPageSize(Number(e.target.value))}
+                style={{ width: 80 }}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+              </CFormSelect>
+            </div>
             {/* Attendance Table */}
             <CTable hover responsive bordered align="middle" className="mb-4">
               <CTableHead>
@@ -255,42 +279,42 @@ const AttendanceDetails = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {filteredAttendance.length === 0 ? (
+                {paginatedAttendance.length === 0 ? (
                   <CTableRow>
                     <CTableDataCell colSpan={4} className="text-center text-medium-emphasis">
                       No attendance records found.
                     </CTableDataCell>
                   </CTableRow>
                 ) : (
-                  filteredAttendance.map((row, idx) => (
-                    <CTableRow key={idx}>
+                  paginatedAttendance.map((row, idx) => (
+                    <CTableRow key={idx + (page - 1) * pageSize}>
                       <CTableDataCell style={{whiteSpace: 'nowrap'}}>
                         {row.date.toLocaleDateString('en-GB')}
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CFormCheck
                           type="radio"
-                          name={`status-${idx}`}
+                          name={`status-${idx + (page - 1) * pageSize}`}
                           checked={row.status === 'present'}
-                          onChange={() => handleStatusChange(idx, 'present')}
+                          onChange={() => handleStatusChange(idx + (page - 1) * pageSize, 'present')}
                           color="success"
                         />
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CFormCheck
                           type="radio"
-                          name={`status-${idx}`}
+                          name={`status-${idx + (page - 1) * pageSize}`}
                           checked={row.status === 'absent'}
-                          onChange={() => handleStatusChange(idx, 'absent')}
+                          onChange={() => handleStatusChange(idx + (page - 1) * pageSize, 'absent')}
                           color="danger"
                         />
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CFormCheck
                           type="radio"
-                          name={`status-${idx}`}
+                          name={`status-${idx + (page - 1) * pageSize}`}
                           checked={row.status === 'leave'}
-                          onChange={() => handleStatusChange(idx, 'leave')}
+                          onChange={() => handleStatusChange(idx + (page - 1) * pageSize, 'leave')}
                           color="info"
                         />
                       </CTableDataCell>
@@ -299,6 +323,28 @@ const AttendanceDetails = () => {
                 )}
               </CTableBody>
             </CTable>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="d-flex justify-content-end mb-3">
+                <CPagination align="end" aria-label="Attendance table pagination">
+                  <CPaginationItem disabled={page === 1} onClick={() => setPage(page - 1)}>
+                    Previous
+                  </CPaginationItem>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <CPaginationItem
+                      key={i + 1}
+                      active={page === i + 1}
+                      onClick={() => setPage(i + 1)}
+                    >
+                      {i + 1}
+                    </CPaginationItem>
+                  ))}
+                  <CPaginationItem disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+                    Next
+                  </CPaginationItem>
+                </CPagination>
+              </div>
+            )}
             {/* Action Buttons */}
             {showUpdate && (
               <div className="mb-3 d-flex gap-3">

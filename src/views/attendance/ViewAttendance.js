@@ -156,7 +156,7 @@ const ViewAttendance = () => {
                         <CButton color="warning" size="sm" className="me-2" onClick={() => navigate(`/attendance/details/${student.id}`, { state: { student } })}>
                           View or Update
                         </CButton>
-                        <CButton color="info" size="sm" onClick={() => alert(`Report for ${student.name}`)}>
+                        <CButton color="info" size="sm" onClick={() => navigate(`/attendance/report/${student.id}`, { state: { student } })}>
                           Report
                         </CButton>
                       </CTableDataCell>
