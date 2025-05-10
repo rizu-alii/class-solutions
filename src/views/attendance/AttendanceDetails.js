@@ -38,6 +38,26 @@ const generateAttendance = (start, end) => {
   return dates
 }
 
+const CalendarInput = React.forwardRef(({ value, onClick, placeholder, isDark }, ref) => (
+  <div style={{ position: 'relative', width: '100%' }}>
+    <input
+      type="text"
+      className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
+      value={value}
+      onClick={onClick}
+      placeholder={placeholder}
+      ref={ref}
+      style={{ paddingRight: 40 }}
+      inputMode="none"
+      onKeyDown={e => e.preventDefault()}
+      autoComplete="off"
+    />
+    <span style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', zIndex: 2, display: 'flex', alignItems: 'center', height: '100%' }}>
+      <CIcon icon={cilCalendar} style={{ color: isDark ? '#fff' : '#333', width: 20, height: 20, cursor: 'pointer' }} onClick={onClick} />
+    </span>
+  </div>
+))
+
 const AttendanceDetails = () => {
   const location = useLocation()
   const navigate = useNavigate()
@@ -91,7 +111,10 @@ const AttendanceDetails = () => {
     setShowSuccess(true)
     setShowUpdate(false)
     setOriginalAttendance(JSON.stringify(attendance))
-    setTimeout(() => setShowSuccess(false), 2000)
+    setTimeout(() => {
+      setShowSuccess(false)
+      navigate('/attendance/view')
+    }, 1000)
   }
 
   // Handle cancel
@@ -151,11 +174,11 @@ const AttendanceDetails = () => {
                     onChange={setDate}
                     disabled={dateType !== 'date'}
                     dateFormat="dd/MM/yyyy"
-                    className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
                     calendarClassName={isDark ? 'react-datepicker-dark' : ''}
                     dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
                     popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
                     maxDate={new Date()}
+                    customInput={<CalendarInput isDark={isDark} />}
                     style={{ minWidth: 150 }}
                   />
                 </div>
@@ -170,12 +193,12 @@ const AttendanceDetails = () => {
                       onChange={date => setDateRange([date, dateRange[1]])}
                       disabled={dateType !== 'range'}
                       dateFormat="dd/MM/yyyy"
-                      className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
                       calendarClassName={isDark ? 'react-datepicker-dark' : ''}
                       dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
                       popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
                       maxDate={dateRange[1] || new Date()}
                       placeholderText="Start date"
+                      customInput={<CalendarInput isDark={isDark} placeholder="Start date" />}
                     />
                   </div>
                   <span className="mx-2">to</span>
@@ -188,13 +211,13 @@ const AttendanceDetails = () => {
                       onChange={date => setDateRange([dateRange[0], date])}
                       disabled={dateType !== 'range'}
                       dateFormat="dd/MM/yyyy"
-                      className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
                       calendarClassName={isDark ? 'react-datepicker-dark' : ''}
                       dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
                       popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
                       minDate={dateRange[0]}
                       maxDate={new Date()}
                       placeholderText="End date"
+                      customInput={<CalendarInput isDark={isDark} placeholder="End date" />}
                     />
                   </div>
                 </div>

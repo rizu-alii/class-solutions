@@ -153,11 +153,8 @@ const ViewAttendance = () => {
                       <CTableDataCell style={{whiteSpace: 'nowrap'}}>{student.class}</CTableDataCell>
                       <CTableDataCell style={{whiteSpace: 'nowrap'}}>{student.section}</CTableDataCell>
                       <CTableDataCell className="text-center" style={{width: 1, whiteSpace: 'nowrap'}}>
-                        <CButton color="success" size="sm" className="me-2" onClick={() => navigate(`/attendance/details/${student.id}`, { state: { student } })}>
-                          View
-                        </CButton>
-                        <CButton color="warning" size="sm" className="me-2" onClick={() => handleUpdateAttendance(student)}>
-                          Update
+                        <CButton color="warning" size="sm" className="me-2" onClick={() => navigate(`/attendance/details/${student.id}`, { state: { student } })}>
+                          View or Update
                         </CButton>
                         <CButton color="info" size="sm" onClick={() => alert(`Report for ${student.name}`)}>
                           Report
