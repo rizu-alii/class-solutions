@@ -1,0 +1,171 @@
+@use "@coreui/coreui/scss/coreui" as * with ( 
+  $enable-deprecation-messages: false,
+);
+@use "@coreui/chartjs/scss/coreui-chartjs";
+@use "vendors/simplebar";
+
+body {
+  background-color: var(--cui-tertiary-bg);
+}
+
+.wrapper {
+  width: 100%;
+  padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);
+  will-change: auto;
+  @include transition(padding .15s);
+}
+
+.header > .container-fluid,
+.sidebar-header {
+  min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
+}
+
+.sidebar-brand-full {
+  margin-left: 3px;
+}
+
+.sidebar-header {
+  .nav-underline-border {
+    --cui-nav-underline-border-link-padding-x: 1rem;
+    --cui-nav-underline-border-gap: 0;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
+  }
+}
+
+.sidebar-toggler {
+  margin-inline-start: auto;
+}
+
+.sidebar-narrow,
+.sidebar-narrow-unfoldable:not(:hover) {
+  .sidebar-toggler {
+    margin-inline-end: auto;
+  }
+}
+
+.header > .container-fluid + .container-fluid {
+  min-height: 3rem;
+}
+
+.footer {
+  min-height: calc(3rem + 1px); // stylelint-disable-line function-disallowed-list
+}
+
+@include color-mode(dark) {
+  body {
+    background-color: var(--cui-dark-bg-subtle);
+  }
+
+  .footer {
+    --cui-footer-bg: var(--cui-body-bg);
+  }
+}
+
+// Neon glow effect for Add Student form
+@keyframes neon-flicker {
+  0%, 100% {
+    box-shadow: 0 0 4px #00fff7, 0 0 8px #00fff7, 0 0 16px #00fff7;
+  }
+  50% {
+    box-shadow: 0 0 8px #00fff7, 0 0 16px #00fff7, 0 0 32px #00fff7;
+  }
+}
+
+.neon-glow {
+  border: 2px solid #00fff7 !important;
+  box-shadow:
+    0 0 4px #00fff7,
+    0 0 8px #00fff7,
+    0 0 16px #00fff7;
+  background: rgba(0, 0, 0, 0.85);
+  color: #00fff7;
+  animation: neon-flicker 2s infinite alternate;
+}
+
+.neon-header {
+  color: #fff !important;
+}
+
+// --- React Datepicker Theme Customization ---
+.react-datepicker {
+  font-size: 1.3rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+  width: 100% !important;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.react-datepicker__month-container {
+  width: 100%;
+}
+
+// Make calendar bigger
+.react-datepicker__month,
+.react-datepicker__header {
+  font-size: 1.2em;
+}
+
+// Light theme (default)
+.react-datepicker {
+  background: #fff;
+  color: #222;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: #00fff7;
+  color: #222;
+}
+
+// Dark theme
+.react-datepicker-dark {
+  background: #18191a !important;
+  color: #fff !important;
+  border: 1px solid #222 !important;
+}
+.react-datepicker-dark .react-datepicker__current-month,
+.react-datepicker-dark .react-datepicker__day-name,
+.react-datepicker-dark .react-datepicker__day,
+.react-datepicker-dark .react-datepicker__time-name {
+  color: #fff !important;
+}
+.react-datepicker-dark .react-datepicker__day--selected,
+.react-datepicker-dark .react-datepicker__day--keyboard-selected {
+  background: #00fff7 !important;
+  color: #18191a !important;
+}
+
+// Make the inline calendar bigger
+.react-datepicker__month-container {
+  min-width: 340px;
+}
+.react-datepicker__header {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+// Fix react-datepicker header and navigation for dark mode
+.react-datepicker-dark .react-datepicker__header {
+  background-color: #18191a !important;
+  border-bottom: 1px solid #222 !important;
+}
+.react-datepicker-dark .react-datepicker__current-month,
+.react-datepicker-dark .react-datepicker__day-name {
+  color: #fff !important;
+}
+.react-datepicker-dark .react-datepicker__navigation,
+.react-datepicker-dark .react-datepicker__navigation--previous,
+.react-datepicker-dark .react-datepicker__navigation--next {
+  background: transparent !important;
+  color: #fff !important;
+  fill: #fff !important;
+  border: none !important;
+}
+
+// --- Neon border for Attendance card ---
+// Reuse .neon-glow for the Attendance card
