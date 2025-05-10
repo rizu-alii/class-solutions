@@ -167,7 +167,7 @@ const ViewStudentReport = () => {
                   <CTableHeaderCell>Name</CTableHeaderCell>
                   <CTableHeaderCell>Class</CTableHeaderCell>
                   <CTableHeaderCell>Section</CTableHeaderCell>
-                  <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
+                  <CTableHeaderCell className="text-center" style={{width: 1, whiteSpace: 'nowrap'}}>Actions</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -184,7 +184,7 @@ const ViewStudentReport = () => {
                       <CTableDataCell>{student.name}</CTableDataCell>
                       <CTableDataCell>{student.class}</CTableDataCell>
                       <CTableDataCell>{student.section}</CTableDataCell>
-                      <CTableDataCell className="text-center">
+                      <CTableDataCell className="text-center" style={{width: 1, whiteSpace: 'nowrap'}}>
                         <CButton color="success" size="sm" className="me-2" onClick={() => handleViewDetails(student)}>
                           View Details
                         </CButton>
