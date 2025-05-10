@@ -64,26 +64,56 @@ body {
   .footer {
     --cui-footer-bg: var(--cui-body-bg);
   }
+
+  .card,
+  .table {
+    background-color: #23272f !important;
+  }
+  .form-label, label, .CFormLabel {
+    color: #fff !important;
+  }
+}
+
+// White card/table background for light mode
+@include color-mode(light) {
+  .card,
+  .table {
+    background-color: #fff !important;
+  }
+  .card-header, .neon-header {
+    color: #111 !important;
+  }
+  .react-datepicker,
+  .react-datepicker__header,
+  .react-datepicker__current-month,
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-name {
+    color: #111 !important;
+  }
+  .form-label, label, .CFormLabel {
+    color: #111 !important;
+  }
 }
 
 // Neon glow effect for Add Student form
 @keyframes neon-flicker {
   0%, 100% {
-    box-shadow: 0 0 4px #00fff7, 0 0 8px #00fff7, 0 0 16px #00fff7;
+    box-shadow: 0 0 4px var(--cui-primary, #3c4bff), 0 0 8px var(--cui-primary, #3c4bff), 0 0 16px var(--cui-primary, #3c4bff);
   }
   50% {
-    box-shadow: 0 0 8px #00fff7, 0 0 16px #00fff7, 0 0 32px #00fff7;
+    box-shadow: 0 0 8px var(--cui-primary, #3c4bff), 0 0 16px var(--cui-primary, #3c4bff), 0 0 32px var(--cui-primary, #3c4bff);
   }
 }
 
 .neon-glow {
-  border: 2px solid #00fff7 !important;
+  border: 2px solid var(--cui-primary, #3c4bff) !important;
   box-shadow:
-    0 0 4px #00fff7,
-    0 0 8px #00fff7,
-    0 0 16px #00fff7;
+    0 0 4px var(--cui-primary, #3c4bff),
+    0 0 8px var(--cui-primary, #3c4bff),
+    0 0 16px var(--cui-primary, #3c4bff);
   background: rgba(0, 0, 0, 0.85);
-  color: #00fff7;
+  color: var(--cui-primary, #3c4bff);
   animation: neon-flicker 2s infinite alternate;
 }
 
@@ -124,9 +154,13 @@ body {
 
 // Dark theme
 .react-datepicker-dark {
-  background: #18191a !important;
+  background: var(--cui-body-bg, #23272f) !important;
   color: #fff !important;
   border: 1px solid #222 !important;
+}
+.react-datepicker-dark .react-datepicker__header {
+  background-color: var(--cui-body-bg, #23272f) !important;
+  border-bottom: 1px solid #222 !important;
 }
 .react-datepicker-dark .react-datepicker__current-month,
 .react-datepicker-dark .react-datepicker__day-name,
@@ -139,6 +173,14 @@ body {
   background: #00fff7 !important;
   color: #18191a !important;
 }
+.react-datepicker-dark .react-datepicker__navigation,
+.react-datepicker-dark .react-datepicker__navigation--previous,
+.react-datepicker-dark .react-datepicker__navigation--next {
+  background: transparent !important;
+  color: #fff !important;
+  fill: #fff !important;
+  border: none !important;
+}
 
 // Make the inline calendar bigger
 .react-datepicker__month-container {
@@ -149,23 +191,31 @@ body {
   padding-bottom: 1.5rem;
 }
 
-// Fix react-datepicker header and navigation for dark mode
-.react-datepicker-dark .react-datepicker__header {
-  background-color: #18191a !important;
-  border-bottom: 1px solid #222 !important;
-}
-.react-datepicker-dark .react-datepicker__current-month,
-.react-datepicker-dark .react-datepicker__day-name {
-  color: #fff !important;
-}
-.react-datepicker-dark .react-datepicker__navigation,
-.react-datepicker-dark .react-datepicker__navigation--previous,
-.react-datepicker-dark .react-datepicker__navigation--next {
-  background: transparent !important;
-  color: #fff !important;
-  fill: #fff !important;
-  border: none !important;
-}
-
 // --- Neon border for Attendance card ---
 // Reuse .neon-glow for the Attendance card
+
+// Button glow on hover for all CoreUI button colors
+.btn-primary:hover, .btn-primary:focus {
+  box-shadow: 0 0 8px var(--cui-primary, #3c4bff), 0 0 16px var(--cui-primary, #3c4bff), 0 0 32px var(--cui-primary, #3c4bff);
+}
+.btn-secondary:hover, .btn-secondary:focus {
+  box-shadow: 0 0 8px var(--cui-secondary, #6c757d), 0 0 16px var(--cui-secondary, #6c757d), 0 0 32px var(--cui-secondary, #6c757d);
+}
+.btn-success:hover, .btn-success:focus {
+  box-shadow: 0 0 8px var(--cui-success, #2eb85c), 0 0 16px var(--cui-success, #2eb85c), 0 0 32px var(--cui-success, #2eb85c);
+}
+.btn-danger:hover, .btn-danger:focus {
+  box-shadow: 0 0 8px var(--cui-danger, #e55353), 0 0 16px var(--cui-danger, #e55353), 0 0 32px var(--cui-danger, #e55353);
+}
+.btn-warning:hover, .btn-warning:focus {
+  box-shadow: 0 0 8px var(--cui-warning, #f9b115), 0 0 16px var(--cui-warning, #f9b115), 0 0 32px var(--cui-warning, #f9b115);
+}
+.btn-info:hover, .btn-info:focus {
+  box-shadow: 0 0 8px var(--cui-info, #39f), 0 0 16px var(--cui-info, #39f), 0 0 32px var(--cui-info, #39f);
+}
+.btn-light:hover, .btn-light:focus {
+  box-shadow: 0 0 8px var(--cui-light, #f0f0f0), 0 0 16px var(--cui-light, #f0f0f0), 0 0 32px var(--cui-light, #f0f0f0);
+}
+.btn-dark:hover, .btn-dark:focus {
+  box-shadow: 0 0 8px var(--cui-dark, #212529), 0 0 16px var(--cui-dark, #212529), 0 0 32px var(--cui-dark, #212529);
+}

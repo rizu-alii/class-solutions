@@ -12,6 +12,7 @@ import {
 } from '@coreui/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useNavigate } from 'react-router-dom'
 
 const Attendance = () => {
   const today = new Date()
@@ -22,6 +23,7 @@ const Attendance = () => {
   })
   const [showSuccess, setShowSuccess] = useState(false)
   const [showError, setShowError] = useState(false)
+  const navigate = useNavigate()
 
   // Theme detection (CoreUI uses 'coreui-free-react-admin-template-theme' in localStorage)
   const theme = localStorage.getItem('coreui-free-react-admin-template-theme') || 'light'
@@ -50,8 +52,8 @@ const Attendance = () => {
       setTimeout(() => setShowError(false), 3000)
       return
     }
-    setShowSuccess(true)
-    setTimeout(() => setShowSuccess(false), 3000)
+    // Go to mark attendance page with form data
+    navigate('/attendance/mark', { state: { class: studentClass, section, date } })
   }
 
   return (
