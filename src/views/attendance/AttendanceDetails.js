@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   CCard,
   CCardBody,
@@ -20,6 +20,8 @@ import {
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useLocation, useNavigate } from 'react-router-dom'
+import CIcon from '@coreui/icons-react'
+import { cilCalendar } from '@coreui/icons'
 
 // Dummy attendance data generator
 const generateAttendance = (start, end) => {
@@ -117,52 +119,85 @@ const AttendanceDetails = () => {
             </div>
             {/* Date/Date Range Selection */}
             <CForm className="mb-4">
-              <div className="d-flex flex-wrap gap-4 align-items-center">
-                <CFormCheck
-                  type="radio"
-                  name="dateType"
-                  id="date"
-                  label="Date"
-                  checked={dateType === 'date'}
-                  onChange={() => setDateType('date')}
-                  className="me-2"
-                />
-                <DatePicker
-                  selected={date}
-                  onChange={setDate}
-                  disabled={dateType !== 'date'}
-                  dateFormat="dd/MM/yyyy"
-                  className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
-                  calendarClassName={isDark ? 'react-datepicker-dark' : ''}
-                  dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
-                  popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
-                  maxDate={new Date()}
-                  style={{ minWidth: 150 }}
-                />
-                <CFormCheck
-                  type="radio"
-                  name="dateType"
-                  id="range"
-                  label="Date Range"
-                  checked={dateType === 'range'}
-                  onChange={() => setDateType('range')}
-                  className="me-2"
-                />
-                <DatePicker
-                  selectsRange
-                  startDate={dateRange[0]}
-                  endDate={dateRange[1]}
-                  onChange={(update) => setDateRange(update)}
-                  disabled={dateType !== 'range'}
-                  dateFormat="dd/MM/yyyy"
-                  className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
-                  calendarClassName={isDark ? 'react-datepicker-dark' : ''}
-                  dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
-                  popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
-                  maxDate={new Date()}
-                  style={{ minWidth: 150 }}
-                  placeholderText="Select range"
-                />
+              <div className="d-flex flex-column gap-2 align-items-start">
+                <div className="d-flex flex-column gap-2">
+                  <div className="d-flex align-items-center">
+                    <CFormCheck
+                      type="radio"
+                      name="dateType"
+                      id="date"
+                      label="Date"
+                      checked={dateType === 'date'}
+                      onChange={() => setDateType('date')}
+                      className="me-2"
+                    />
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <CFormCheck
+                      type="radio"
+                      name="dateType"
+                      id="range"
+                      label="Date Range"
+                      checked={dateType === 'range'}
+                      onChange={() => setDateType('range')}
+                      className="me-2"
+                    />
+                  </div>
+                </div>
+                {/* Date Picker */}
+                <div style={{ minWidth: 180, marginTop: 8, display: dateType === 'date' ? 'block' : 'none' }}>
+                  <DatePicker
+                    selected={date}
+                    onChange={setDate}
+                    disabled={dateType !== 'date'}
+                    dateFormat="dd/MM/yyyy"
+                    className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
+                    calendarClassName={isDark ? 'react-datepicker-dark' : ''}
+                    dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
+                    popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
+                    maxDate={new Date()}
+                    style={{ minWidth: 150 }}
+                  />
+                </div>
+                {/* Date Range Picker */}
+                <div style={{ display: dateType === 'range' ? 'flex' : 'none', alignItems: 'center', minWidth: 320, marginTop: 8, width: '100%' }}>
+                  <div style={{ flex: 1 }}>
+                    <DatePicker
+                      selectsStart
+                      startDate={dateRange[0]}
+                      endDate={dateRange[1]}
+                      selected={dateRange[0]}
+                      onChange={date => setDateRange([date, dateRange[1]])}
+                      disabled={dateType !== 'range'}
+                      dateFormat="dd/MM/yyyy"
+                      className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
+                      calendarClassName={isDark ? 'react-datepicker-dark' : ''}
+                      dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
+                      popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
+                      maxDate={dateRange[1] || new Date()}
+                      placeholderText="Start date"
+                    />
+                  </div>
+                  <span className="mx-2">to</span>
+                  <div style={{ flex: 1 }}>
+                    <DatePicker
+                      selectsEnd
+                      startDate={dateRange[0]}
+                      endDate={dateRange[1]}
+                      selected={dateRange[1]}
+                      onChange={date => setDateRange([dateRange[0], date])}
+                      disabled={dateType !== 'range'}
+                      dateFormat="dd/MM/yyyy"
+                      className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
+                      calendarClassName={isDark ? 'react-datepicker-dark' : ''}
+                      dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
+                      popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
+                      minDate={dateRange[0]}
+                      maxDate={new Date()}
+                      placeholderText="End date"
+                    />
+                  </div>
+                </div>
               </div>
             </CForm>
             {/* Attendance Table */}

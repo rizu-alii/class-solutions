@@ -7,6 +7,7 @@ import UpdateAttendance from './views/attendance/UpdateAttendance'
 import ViewStudentReport from './views/reports/ViewStudentReport'
 import UpdateStudent from './views/reports/UpdateStudent'
 import StudentDetails from './views/reports/StudentDetails'
+import AttendanceDetails from './views/attendance/AttendanceDetails'
 
 const routesConfig = [
   {
@@ -40,6 +41,10 @@ const routesConfig = [
   {
     path: 'reports/student-details/:id',
     element: StudentDetails,
+  },
+  {
+    path: 'attendance/details/:id',
+    element: AttendanceDetails,
   },
 ]
 
