@@ -16,6 +16,7 @@ import {
   CTableHeaderCell,
   CTableRow,
   CAlert,
+  CFormSelect,
 } from '@coreui/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -81,6 +82,7 @@ const AttendanceDetails = () => {
   const [originalAttendance, setOriginalAttendance] = useState([])
   const [showUpdate, setShowUpdate] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [statusFilter, setStatusFilter] = useState('all')
 
   // Generate dummy attendance data on mount or date change
   useEffect(() => {
@@ -122,6 +124,11 @@ const AttendanceDetails = () => {
     navigate('/attendance/view')
   }
 
+  // Filter attendance for table
+  const filteredAttendance = statusFilter === 'all'
+    ? attendance
+    : attendance.filter(row => row.status === statusFilter)
+
   return (
     <CRow className="justify-content-center">
       <CCol xs={12} md={10} lg={8}>
@@ -143,6 +150,20 @@ const AttendanceDetails = () => {
             {/* Date/Date Range Selection */}
             <CForm className="mb-4">
               <div className="d-flex flex-column gap-2 align-items-start">
+                {/* Status Filter Dropdown */}
+                <div style={{ minWidth: 180, width: 220 }}>
+                  <CFormLabel htmlFor="statusFilter" style={{ color: isDark ? '#fff' : '#222' }}>Attendance Status</CFormLabel>
+                  <CFormSelect
+                    id="statusFilter"
+                    value={statusFilter}
+                    onChange={e => setStatusFilter(e.target.value)}
+                  >
+                    <option value="all">All</option>
+                    <option value="present">Present</option>
+                    <option value="absent">Absent</option>
+                    <option value="leave">Leave</option>
+                  </CFormSelect>
+                </div>
                 <div className="d-flex flex-column gap-2">
                   <div className="d-flex align-items-center">
                     <CFormCheck
@@ -234,14 +255,14 @@ const AttendanceDetails = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {attendance.length === 0 ? (
+                {filteredAttendance.length === 0 ? (
                   <CTableRow>
                     <CTableDataCell colSpan={4} className="text-center text-medium-emphasis">
                       No attendance records found.
                     </CTableDataCell>
                   </CTableRow>
                 ) : (
-                  attendance.map((row, idx) => (
+                  filteredAttendance.map((row, idx) => (
                     <CTableRow key={idx}>
                       <CTableDataCell style={{whiteSpace: 'nowrap'}}>
                         {row.date.toLocaleDateString('en-GB')}
