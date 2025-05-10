@@ -52,7 +52,7 @@ export const AppSidebarNav = ({ items }) => {
     const { component, name, icon, items, to, ...rest } = item
     const Component = component
     return (
-      <Component compact as="div" key={index} toggler={navLink(name, icon)} {...rest}>
+      <Component as="div" key={index} toggler={navLink(name, icon)} {...rest}>
         {items?.map((item, index) =>
           item.items ? navGroup(item, index) : navItem(item, index, true),
         )}
@@ -61,7 +61,7 @@ export const AppSidebarNav = ({ items }) => {
   }
 
   return (
-    <CSidebarNav as={SimpleBar}>
+    <CSidebarNav as={SimpleBar} accordion={false}>
       {items &&
         items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
     </CSidebarNav>

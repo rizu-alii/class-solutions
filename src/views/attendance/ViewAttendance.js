@@ -17,16 +17,11 @@ import {
   CTableRow,
   CPagination,
   CPaginationItem,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CAlert,
 } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 
 // Dummy student data
-const initialStudents = Array.from({ length: 32 }, (_, i) => ({
+const allStudents = Array.from({ length: 32 }, (_, i) => ({
   id: i + 1,
   name: `Student ${i + 1}`,
   rollNo: (100 + i).toString(),
@@ -36,7 +31,7 @@ const initialStudents = Array.from({ length: 32 }, (_, i) => ({
 
 const PAGE_SIZE = 10
 
-const ViewStudentReport = () => {
+const ViewAttendance = () => {
   const [filters, setFilters] = useState({
     name: '',
     rollNo: '',
@@ -44,14 +39,10 @@ const ViewStudentReport = () => {
     section: '',
   })
   const [page, setPage] = useState(1)
-  const [students, setStudents] = useState(initialStudents)
-  const [deleteId, setDeleteId] = useState(null)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [deleteSuccess, setDeleteSuccess] = useState(false)
   const navigate = useNavigate()
 
   // Filter students
-  const filtered = students.filter((s) => {
+  const filtered = allStudents.filter((s) => {
     return (
       (!filters.name || s.name.toLowerCase().includes(filters.name.toLowerCase())) &&
       (!filters.rollNo || s.rollNo.includes(filters.rollNo)) &&
@@ -68,30 +59,8 @@ const ViewStudentReport = () => {
     setPage(1)
   }
 
-  const handleDelete = (id) => {
-    setDeleteId(id)
-    setShowDeleteModal(true)
-  }
-
-  const confirmDelete = () => {
-    setStudents((prev) => prev.filter((s) => s.id !== deleteId))
-    setShowDeleteModal(false)
-    setDeleteId(null)
-    setDeleteSuccess(true)
-    setTimeout(() => setDeleteSuccess(false), 2000)
-  }
-
-  const cancelDelete = () => {
-    setShowDeleteModal(false)
-    setDeleteId(null)
-  }
-
-  const handleUpdate = (student) => {
-    navigate(`/reports/update-student/${student.id}`, { state: { student } })
-  }
-
-  const handleViewDetails = (student) => {
-    navigate(`/reports/student-details/${student.id}`)
+  const handleUpdateAttendance = (student) => {
+    navigate(`/attendance/update/${student.id}`, { state: { student } })
   }
 
   return (
@@ -99,10 +68,9 @@ const ViewStudentReport = () => {
       <CCol xs={12}>
         <CCard className="mb-6 neon-glow">
           <CCardHeader className="neon-header">
-            <strong>View Student Report</strong>
+            <strong>View Attendance</strong>
           </CCardHeader>
           <CCardBody>
-            {deleteSuccess && <CAlert color="success" className="mb-4">Student deleted successfully!</CAlert>}
             <CForm className="mb-4">
               <CRow className="g-3 align-items-end">
                 <CCol md={3}>
@@ -185,11 +153,14 @@ const ViewStudentReport = () => {
                       <CTableDataCell style={{whiteSpace: 'nowrap'}}>{student.class}</CTableDataCell>
                       <CTableDataCell style={{whiteSpace: 'nowrap'}}>{student.section}</CTableDataCell>
                       <CTableDataCell className="text-center" style={{width: 1, whiteSpace: 'nowrap'}}>
-                        <CButton color="warning" size="sm" className="me-2" onClick={() => handleUpdate(student)}>
+                        <CButton color="success" size="sm" className="me-2" onClick={() => navigate(`/attendance/details/${student.id}`, { state: { student } })}>
+                          View
+                        </CButton>
+                        <CButton color="warning" size="sm" className="me-2" onClick={() => handleUpdateAttendance(student)}>
                           Update
                         </CButton>
-                        <CButton color="danger" size="sm" onClick={() => handleDelete(student.id)}>
-                          Delete
+                        <CButton color="info" size="sm" onClick={() => alert(`Report for ${student.name}`)}>
+                          Report
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
@@ -201,7 +172,7 @@ const ViewStudentReport = () => {
               <div>
                 <span className="text-success">Total {filtered.length} records found</span>
               </div>
-              <CPagination align="end" aria-label="Student table pagination">
+              <CPagination align="end" aria-label="Attendance table pagination">
                 <CPaginationItem disabled={page === 1} onClick={() => setPage(page - 1)}>
                   Previous
                 </CPaginationItem>
@@ -219,14 +190,6 @@ const ViewStudentReport = () => {
                 </CPaginationItem>
               </CPagination>
             </div>
-            <CModal visible={showDeleteModal} onClose={cancelDelete} alignment="center">
-              <CModalHeader onClose={cancelDelete}>Confirm Delete</CModalHeader>
-              <CModalBody>Are you sure you want to delete this student?</CModalBody>
-              <CModalFooter>
-                <CButton color="danger" onClick={confirmDelete}>Yes</CButton>
-                <CButton color="secondary" onClick={cancelDelete}>No</CButton>
-              </CModalFooter>
-            </CModal>
           </CCardBody>
         </CCard>
       </CCol>
@@ -234,4 +197,4 @@ const ViewStudentReport = () => {
   )
 }
 
-export default ViewStudentReport 
+export default ViewAttendance 
