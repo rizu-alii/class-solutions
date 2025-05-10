@@ -56,7 +56,7 @@ const MarkAttendance = () => {
         <CCard className="mb-8 neon-glow">
           <CCardHeader className="neon-header">
             <strong>Mark Attendance</strong>
-            <div style={{ fontSize: '1rem', fontWeight: 400, marginTop: 8 }}>
+            <div style={{ fontSize: '1rem', fontWeight: 400, marginTop: 8  }}>
               Class: <b>{className}</b> &nbsp; | &nbsp; Section: <b>{section}</b> &nbsp; | &nbsp; Date: <b>{new Date(date).toLocaleDateString()}</b>
             </div>
           </CCardHeader>
