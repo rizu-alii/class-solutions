@@ -7,6 +7,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilCalendar, cilPrint } from '@coreui/icons'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 // Dummy attendance data generator for a range
 const generateAttendance = (start, end) => {
@@ -91,9 +93,78 @@ const StudentAttendanceReport = () => {
   if (statusChecks.absent) grouped.absent.forEach(row => tableRows.push({ ...row, type: 'Absent' }))
   if (statusChecks.leave) grouped.leave.forEach(row => tableRows.push({ ...row, type: 'Leave' }))
 
-  // PDF generation dummy handler
+  // PDF generation handler
   const handleGeneratePDF = () => {
-    alert('PDF generation is not implemented in this demo.')
+    console.log('PDF generation triggered')
+    const doc = new jsPDF()
+    // Title - make it more bold and prominent
+    doc.setFontSize(22)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Student Attendance Report', 14, 18)
+    // Draw a line below the title
+    doc.setLineWidth(0.8)
+    doc.line(14, 21, 196, 21)
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'normal')
+    // Student Details
+    let y = 26
+    doc.setFont(undefined, 'bold')
+    doc.text(`Name:`, 14, y)
+    doc.setFont(undefined, 'normal')
+    doc.text(student.name, 34, y)
+    doc.setFont(undefined, 'bold')
+    doc.text(`Roll No:`, 80, y)
+    doc.setFont(undefined, 'normal')
+    doc.text(student.rollNo, 102, y)
+    doc.setFont(undefined, 'bold')
+    doc.text(`Class:`, 140, y)
+    doc.setFont(undefined, 'normal')
+    doc.text(student.class, 158, y)
+    y += 8
+    doc.setFont(undefined, 'bold')
+    doc.text(`Section:`, 14, y)
+    doc.setFont(undefined, 'normal')
+    doc.text(student.section, 34, y)
+    y += 10
+    // Academic Description
+    doc.setFont(undefined, 'bold')
+    doc.text('Academic Description:', 14, y)
+    doc.setFont(undefined, 'normal')
+    const academicDesc = document.getElementById('academicDesc')?.value || ''
+    const splitAcademic = doc.splitTextToSize(academicDesc, 180)
+    doc.text(splitAcademic, 14, y + 6)
+    y += 6 + splitAcademic.length * 6
+    // Behavior Description
+    doc.setFont(undefined, 'bold')
+    doc.text('Behavior Description:', 14, y)
+    doc.setFont(undefined, 'normal')
+    const behaviorDesc = document.getElementById('behaviorDesc')?.value || ''
+    const splitBehavior = doc.splitTextToSize(behaviorDesc, 180)
+    doc.text(splitBehavior, 14, y + 6)
+    y += 6 + splitBehavior.length * 6
+    // Table
+    const tableHead = [[
+      'Date', 'Status', 'Date', 'Status', 'Date', 'Status',
+    ]]
+    const tableBody = groupedRows.map(rowGroup => [
+      ...rowGroup.map(row => [
+        row.date.toLocaleDateString('en-GB'), row.type
+      ]).flat(),
+      ...Array.from({ length: 3 - rowGroup.length }).map(() => ['-', '-']).flat(),
+    ])
+    autoTable(doc, {
+      head: tableHead,
+      body: tableBody,
+      startY: y + 8,
+      theme: 'grid',
+      headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
+      styles: { fontSize: 10, cellPadding: 2 },
+      margin: { left: 8, right: 8 },
+      tableWidth: 'auto',
+    })
+    // Save
+    const fileName = `${student.name} (${student.rollNo}) Attendance Report.pdf`
+    doc.save(fileName)
   }
 
   // Table rows: show present dates, then absent, then leave (if checked)
