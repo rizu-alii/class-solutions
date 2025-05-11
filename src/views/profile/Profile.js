@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   CButton,
   CCard,
@@ -16,6 +16,8 @@ import {
   CTabContent,
   CTabPane,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import './Profile.css'
 
 const staticProfile = {
   name: 'John Doe',
@@ -25,6 +27,8 @@ const staticProfile = {
   subject: 'Mathematics',
   profile_picture: null,
 }
+
+const defaultAvatar = 'https://www.w3schools.com/howto/img_avatar.png'
 
 const Profile = ({ tab }) => {
   const [profile, setProfile] = useState(staticProfile)
@@ -37,6 +41,10 @@ const Profile = ({ tab }) => {
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState(tab === 'password' ? 1 : 0)
+  const [profileImage, setProfileImage] = useState(null)
+  const fileInputRef = useRef(null)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleProfileSubmit = (e) => {
     e.preventDefault()
@@ -70,13 +78,14 @@ const Profile = ({ tab }) => {
     }, 800)
   }
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]
-    if (file && file.size > 2 * 1024 * 1024) {
-      setError('File size should be less than 2MB')
-      return
+  const handleImageClick = () => {
+    fileInputRef.current.click()
+  }
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfileImage(URL.createObjectURL(e.target.files[0]))
     }
-    setProfile({ ...profile, profile_picture: file })
   }
 
   return (
@@ -89,6 +98,54 @@ const Profile = ({ tab }) => {
           <CCardBody>
             {error && <CAlert color="danger">{error}</CAlert>}
             {success && <CAlert color="success">{success}</CAlert>}
+            {tab !== 'password' && (
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+                <div
+                  style={{
+                    width: 120,
+                    height: 120,
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: '3px solid #4f5d75',
+                    cursor: 'pointer',
+                    position: 'relative',
+                  }}
+                  onClick={handleImageClick}
+                  title="Click to change profile picture"
+                  className="profile-avatar-hover"
+                >
+                  <img
+                    src={profileImage || defaultAvatar}
+                    alt="Profile"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleImageChange}
+                  />
+                  <span className="avatar-camera-icon" style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'rgba(0,0,0,0.25)',
+                    color: '#fff',
+                    opacity: 0,
+                    transition: 'opacity 0.2s',
+                    fontSize: 32,
+                  }}>
+                    <span style={{ fontSize: 32 }}>📷</span>
+                  </span>
+                </div>
+              </div>
+            )}
             {tab === 'password' ? (
               <CForm onSubmit={handlePasswordSubmit} className="mt-3">
                 <CRow>
@@ -109,32 +166,68 @@ const Profile = ({ tab }) => {
                 </CRow>
                 <CRow>
                   <CCol xs={12} className="mb-3">
-                    <CFormInput
-                      type="password"
-                      label="New Password"
-                      value={password.new_password}
-                      onChange={(e) =>
-                        setPassword({
-                          ...password,
-                          new_password: e.target.value,
-                        })
-                      }
-                      required
-                    />
+                    <div style={{ position: 'relative' }}>
+                      <CFormInput
+                        type={showNewPassword ? 'text' : 'password'}
+                        label="New Password"
+                        value={password.new_password}
+                        onChange={(e) =>
+                          setPassword({
+                            ...password,
+                            new_password: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                      <span
+                        style={{
+                          position: 'absolute',
+                          right: 12,
+                          top: '70%',
+                          transform: 'translateY(-50%)',
+                          cursor: 'pointer',
+                          zIndex: 2,
+                        }}
+                        onClick={() => setShowNewPassword((v) => !v)}
+                        title={showNewPassword ? 'Hide password' : 'Show password'}
+                      >
+                        <span style={{ fontSize: 20 }}>
+                          {showNewPassword ? '🙈' : '👁️'}
+                        </span>
+                      </span>
+                    </div>
                   </CCol>
                   <CCol xs={12} className="mb-3">
-                    <CFormInput
-                      type="password"
-                      label="Confirm New Password"
-                      value={password.confirm_password}
-                      onChange={(e) =>
-                        setPassword({
-                          ...password,
-                          confirm_password: e.target.value,
-                        })
-                      }
-                      required
-                    />
+                    <div style={{ position: 'relative' }}>
+                      <CFormInput
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        label="Confirm New Password"
+                        value={password.confirm_password}
+                        onChange={(e) =>
+                          setPassword({
+                            ...password,
+                            confirm_password: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                      <span
+                        style={{
+                          position: 'absolute',
+                          right: 12,
+                          top: '70%',
+                          transform: 'translateY(-50%)',
+                          cursor: 'pointer',
+                          zIndex: 2,
+                        }}
+                        onClick={() => setShowConfirmPassword((v) => !v)}
+                        title={showConfirmPassword ? 'Hide password' : 'Show password'}
+                      >
+                        <span style={{ fontSize: 20 }}>
+                          {showConfirmPassword ? '🙈' : '👁️'}
+                        </span>
+                      </span>
+                    </div>
                   </CCol>
                 </CRow>
                 <CRow>
@@ -193,17 +286,6 @@ const Profile = ({ tab }) => {
                       onChange={(e) => setProfile({ ...profile, subject: e.target.value })}
                       required
                     />
-                  </CCol>
-                  <CCol xs={12} className="mb-3">
-                    <CFormInput
-                      type="file"
-                      label="Profile Picture"
-                      onChange={handleFileChange}
-                      accept="image/jpeg,image/png"
-                    />
-                    <small className="text-medium-emphasis">
-                      Max file size: 2MB. Accepted formats: JPEG, PNG
-                    </small>
                   </CCol>
                 </CRow>
                 <CRow>

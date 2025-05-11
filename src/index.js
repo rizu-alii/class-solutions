@@ -6,6 +6,8 @@ import 'core-js'
 import App from './App'
 import store from './store'
 
+document.title = 'Class solutions'
+
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />

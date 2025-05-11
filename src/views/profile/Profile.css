@@ -1,0 +1,6 @@
+.profile-avatar-hover .avatar-camera-icon {
+  opacity: 0;
+}
+.profile-avatar-hover:hover .avatar-camera-icon {
+  opacity: 1;
+} 
