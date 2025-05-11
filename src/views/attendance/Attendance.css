@@ -1,0 +1,47 @@
+/* Responsive and centered calendar container */
+.attendance-calendar-container {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+@media (max-width: 576px) {
+  .attendance-calendar-container {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .attendance-calendar-container .react-datepicker {
+    width: 100vw !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .attendance-calendar-container .react-datepicker__header {
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    box-sizing: border-box;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+    overflow-x: hidden !important;
+  }
+  /* Hide year dropdown if it appears */
+  .attendance-calendar-container .react-datepicker__year-dropdown-container {
+    display: none !important;
+  }
+  /* Center the month dropdown */
+  .attendance-calendar-container .react-datepicker__current-month,
+  .attendance-calendar-container .react-datepicker__month-dropdown-container {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    float: none !important;
+  }
+} 
