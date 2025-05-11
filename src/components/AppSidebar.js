@@ -47,10 +47,15 @@ const AppSidebar = () => {
         />
       </CSidebarHeader>
       <AppSidebarNav items={navigation} />
-      <CSidebarFooter className="border-top d-none d-lg-flex">
-        <CSidebarToggler
-          onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
-        />
+      <CSidebarFooter className="border-top d-flex flex-column align-items-center justify-content-end" style={{padding: '1rem'}}>
+        <button
+          type="button"
+          className="btn btn-danger w-100"
+          style={{marginTop: '1rem'}}
+          onClick={() => { window.location.href = '/#/login' }}
+        >
+          Logout
+        </button>
       </CSidebarFooter>
     </CSidebar>
   )

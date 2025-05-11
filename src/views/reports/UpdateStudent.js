@@ -22,6 +22,8 @@ const UpdateStudent = () => {
     rollNo: '',
     class: '',
     section: '',
+    fatherName: '',
+    fatherPhone: '',
   })
   const [showSuccess, setShowSuccess] = useState(false)
 
@@ -103,6 +105,24 @@ const UpdateStudent = () => {
                     </option>
                   ))}
                 </CFormSelect>
+              </div>
+              <div className="mb-3">
+                <CFormInput
+                  label="Father Name"
+                  name="fatherName"
+                  value={formData.fatherName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <CFormInput
+                  label="Father Phone Number"
+                  name="fatherPhone"
+                  value={formData.fatherPhone}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className="d-flex gap-2">
                 <CButton color="primary" type="submit">

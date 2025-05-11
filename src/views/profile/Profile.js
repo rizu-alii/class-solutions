@@ -20,11 +20,13 @@ import {
 const staticProfile = {
   name: 'John Doe',
   email: 'admin@example.com',
+  phone: '',
+  school: '',
   subject: 'Mathematics',
   profile_picture: null,
 }
 
-const Profile = () => {
+const Profile = ({ tab }) => {
   const [profile, setProfile] = useState(staticProfile)
   const [password, setPassword] = useState({
     old_password: '',
@@ -34,7 +36,7 @@ const Profile = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(tab === 'password' ? 1 : 0)
 
   const handleProfileSubmit = (e) => {
     e.preventDefault()
@@ -80,149 +82,144 @@ const Profile = () => {
   return (
     <CRow>
       <CCol xs={12}>
-        <CCard className="mb-4">
+        <CCard className="mb-4 neon-glow">
           <CCardHeader>
             <strong>Profile Management</strong>
           </CCardHeader>
           <CCardBody>
             {error && <CAlert color="danger">{error}</CAlert>}
             {success && <CAlert color="success">{success}</CAlert>}
-            <CTabs activeKey={activeTab} onActiveKeyChange={setActiveTab}>
-              <CNav variant="tabs">
-                <CNavItem>
-                  <CNavLink active={activeTab === 0}>Profile</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink active={activeTab === 1}>Change Password</CNavLink>
-                </CNavItem>
-              </CNav>
-              <CTabContent>
-                <CTabPane visible={activeTab === 0}>
-                  <CForm onSubmit={handleProfileSubmit} className="mt-3">
-                    <CRow>
-                      <CCol md={6} className="mb-3">
-                        <CFormInput
-                          label="Name"
-                          value={profile.name}
-                          onChange={(e) =>
-                            setProfile({ ...profile, name: e.target.value })
-                          }
-                          required
-                        />
-                      </CCol>
-                      <CCol md={6} className="mb-3">
-                        <CFormInput
-                          label="Email"
-                          type="email"
-                          value={profile.email}
-                          onChange={(e) =>
-                            setProfile({ ...profile, email: e.target.value })
-                          }
-                          required
-                        />
-                      </CCol>
-                    </CRow>
-                    <CRow>
-                      <CCol md={6} className="mb-3">
-                        <CFormInput
-                          label="Subject"
-                          value={profile.subject}
-                          onChange={(e) =>
-                            setProfile({ ...profile, subject: e.target.value })
-                          }
-                          required
-                        />
-                      </CCol>
-                      <CCol md={6} className="mb-3">
-                        <CFormInput
-                          type="file"
-                          label="Profile Picture"
-                          onChange={handleFileChange}
-                          accept="image/jpeg,image/png"
-                        />
-                        <small className="text-medium-emphasis">
-                          Max file size: 2MB. Accepted formats: JPEG, PNG
-                        </small>
-                      </CCol>
-                    </CRow>
-                    <CRow>
-                      <CCol xs={12} className="text-end">
-                        <CButton
-                          color="primary"
-                          type="submit"
-                          disabled={loading}
-                          className="px-4"
-                        >
-                          {loading ? 'Saving...' : 'Save Changes'}
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </CForm>
-                </CTabPane>
-                <CTabPane visible={activeTab === 1}>
-                  <CForm onSubmit={handlePasswordSubmit} className="mt-3">
-                    <CRow>
-                      <CCol md={12} className="mb-3">
-                        <CFormInput
-                          type="password"
-                          label="Current Password"
-                          value={password.old_password}
-                          onChange={(e) =>
-                            setPassword({
-                              ...password,
-                              old_password: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                      </CCol>
-                    </CRow>
-                    <CRow>
-                      <CCol md={6} className="mb-3">
-                        <CFormInput
-                          type="password"
-                          label="New Password"
-                          value={password.new_password}
-                          onChange={(e) =>
-                            setPassword({
-                              ...password,
-                              new_password: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                      </CCol>
-                      <CCol md={6} className="mb-3">
-                        <CFormInput
-                          type="password"
-                          label="Confirm New Password"
-                          value={password.confirm_password}
-                          onChange={(e) =>
-                            setPassword({
-                              ...password,
-                              confirm_password: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                      </CCol>
-                    </CRow>
-                    <CRow>
-                      <CCol xs={12} className="text-end">
-                        <CButton
-                          color="primary"
-                          type="submit"
-                          disabled={loading}
-                          className="px-4"
-                        >
-                          {loading ? 'Changing...' : 'Change Password'}
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </CForm>
-                </CTabPane>
-              </CTabContent>
-            </CTabs>
+            {tab === 'password' ? (
+              <CForm onSubmit={handlePasswordSubmit} className="mt-3">
+                <CRow>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      type="password"
+                      label="Current Password"
+                      value={password.old_password}
+                      onChange={(e) =>
+                        setPassword({
+                          ...password,
+                          old_password: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </CCol>
+                </CRow>
+                <CRow>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      type="password"
+                      label="New Password"
+                      value={password.new_password}
+                      onChange={(e) =>
+                        setPassword({
+                          ...password,
+                          new_password: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </CCol>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      type="password"
+                      label="Confirm New Password"
+                      value={password.confirm_password}
+                      onChange={(e) =>
+                        setPassword({
+                          ...password,
+                          confirm_password: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </CCol>
+                </CRow>
+                <CRow>
+                  <CCol xs={12} className="text-end">
+                    <CButton
+                      color="primary"
+                      type="submit"
+                      disabled={loading}
+                      className="px-4"
+                    >
+                      {loading ? 'Changing...' : 'Change Password'}
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CForm>
+            ) : (
+              <CForm onSubmit={handleProfileSubmit} className="mt-3">
+                <CRow>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      label="Name"
+                      value={profile.name}
+                      onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                      required
+                    />
+                  </CCol>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      label="Email"
+                      type="email"
+                      value={profile.email}
+                      onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                      required
+                    />
+                  </CCol>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      label="Phone Number"
+                      value={profile.phone}
+                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      required
+                    />
+                  </CCol>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      label="School Name"
+                      value={profile.school}
+                      onChange={(e) => setProfile({ ...profile, school: e.target.value })}
+                      required
+                    />
+                  </CCol>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      label="Subject"
+                      value={profile.subject}
+                      onChange={(e) => setProfile({ ...profile, subject: e.target.value })}
+                      required
+                    />
+                  </CCol>
+                  <CCol xs={12} className="mb-3">
+                    <CFormInput
+                      type="file"
+                      label="Profile Picture"
+                      onChange={handleFileChange}
+                      accept="image/jpeg,image/png"
+                    />
+                    <small className="text-medium-emphasis">
+                      Max file size: 2MB. Accepted formats: JPEG, PNG
+                    </small>
+                  </CCol>
+                </CRow>
+                <CRow>
+                  <CCol xs={12} className="text-end">
+                    <CButton
+                      color="primary"
+                      type="submit"
+                      disabled={loading}
+                      className="px-4"
+                    >
+                      {loading ? 'Saving...' : 'Save Changes'}
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CForm>
+            )}
           </CCardBody>
         </CCard>
       </CCol>

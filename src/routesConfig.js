@@ -9,6 +9,12 @@ import UpdateStudent from './views/reports/UpdateStudent'
 import StudentDetails from './views/reports/StudentDetails'
 import AttendanceDetails from './views/attendance/AttendanceDetails'
 import StudentAttendanceReport from './views/attendance/StudentAttendanceReport'
+import Dashboard from './views/dashboard/Dashboard'
+import AbsentYesterday from './views/attendance/AbsentYesterday'
+import StudentProfile from './views/students/StudentProfile'
+import UpdateProfile from './views/profile/UpdateProfile'
+import ChangePassword from './views/profile/ChangePassword'
+import TestManagement from './views/test/TestManagement'
 
 const routesConfig = [
   {
@@ -50,6 +56,30 @@ const routesConfig = [
   {
     path: 'attendance/report/:id',
     element: StudentAttendanceReport,
+  },
+  {
+    path: 'dashboard',
+    element: Dashboard,
+  },
+  {
+    path: 'attendance/absent-yesterday',
+    element: AbsentYesterday,
+  },
+  {
+    path: 'students/profile/:id',
+    element: StudentProfile,
+  },
+  {
+    path: 'profile/update',
+    element: UpdateProfile,
+  },
+  {
+    path: 'profile/change-password',
+    element: ChangePassword,
+  },
+  {
+    path: 'test-management',
+    element: TestManagement,
   },
 ]
 

@@ -188,6 +188,9 @@ const ViewStudentReport = () => {
                         <CButton color="warning" size="sm" className="me-2" onClick={() => handleUpdate(student)}>
                           Update
                         </CButton>
+                        <CButton color="success" size="sm" className="me-2" onClick={() => navigate(`/students/profile/${student.id}`)}>
+                          View Details
+                        </CButton>
                         <CButton color="danger" size="sm" onClick={() => handleDelete(student.id)}>
                           Delete
                         </CButton>

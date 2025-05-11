@@ -53,6 +53,10 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const AttendanceDetails = React.lazy(() => import('./views/attendance/AttendanceDetails'))
 
+const Profile = React.lazy(() => import('./views/profile/Profile'))
+const UpdateProfile = React.lazy(() => import('./views/profile/UpdateProfile'))
+const ChangePassword = React.lazy(() => import('./views/profile/ChangePassword'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -100,6 +104,8 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/attendance/details/:id', name: 'Attendance Details', element: AttendanceDetails },
+  { path: '/profile/update', name: 'Update Profile', element: <UpdateProfile /> },
+  { path: '/profile/change-password', name: 'Change Password', element: <ChangePassword /> },
 ]
 
 export default routes
