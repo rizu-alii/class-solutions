@@ -14,6 +14,34 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useNavigate } from 'react-router-dom'
 
+// Add custom styles for the calendar
+const calendarStyles = {
+  calendarContainer: {
+    width: '100%',
+    maxWidth: '100%',
+    margin: '0 auto',
+    overflow: 'hidden',
+  },
+  calendarWrapper: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '10px',
+  },
+  calendar: {
+    width: '100%',
+    maxWidth: '350px',
+  },
+  '@media (max-width: 576px)': {
+    calendarContainer: {
+      padding: '0 10px',
+    },
+    calendar: {
+      maxWidth: '100%',
+    },
+  },
+}
+
 const Attendance = () => {
   const today = new Date()
   const [formData, setFormData] = useState({
@@ -60,7 +88,7 @@ const Attendance = () => {
     <CRow className="justify-content-center">
       <CCol xs={12} sm={10} md={8} lg={6}>
         <CCard className="mb-6 neon-glow">
-          <CCardHeader className="neon-header">
+          <CCardHeader className="neon-header" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             <strong>Attendance</strong>
           </CCardHeader>
           <CCardBody>
@@ -103,21 +131,25 @@ const Attendance = () => {
                   ))}
                 </CFormSelect>
               </div>
-              <div className="mb-4 text-center">
-                <DatePicker
-                  selected={formData.date}
-                  onChange={handleDateChange}
-                  maxDate={today}
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  dateFormat="dd/MM/yyyy"
-                  className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
-                  calendarClassName={isDark ? 'react-datepicker-dark' : ''}
-                  dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
-                  popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
-                  inline
-                />
+              <div className="mb-4" style={calendarStyles.calendarContainer}>
+                <div style={calendarStyles.calendarWrapper}>
+                  <div style={calendarStyles.calendar}>
+                    <DatePicker
+                      selected={formData.date}
+                      onChange={handleDateChange}
+                      maxDate={today}
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      className={`form-control ${isDark ? 'react-datepicker__input-container-dark' : ''}`}
+                      calendarClassName={isDark ? 'react-datepicker-dark' : ''}
+                      dayClassName={() => isDark ? 'react-datepicker-day-dark' : ''}
+                      popperClassName={isDark ? 'react-datepicker-popper-dark' : ''}
+                      inline
+                    />
+                  </div>
+                </div>
               </div>
               <div className="d-flex justify-content-center">
                 <CButton color="warning" type="submit" style={{ minWidth: 200, fontSize: '1.2rem' }}>
